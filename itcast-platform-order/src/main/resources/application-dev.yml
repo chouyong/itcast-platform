@@ -1,0 +1,87 @@
+server:
+  port: 7080
+
+spring:
+  profiles: dev
+  datasource:
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf8&useSSL=false
+      username: root
+      password: root
+      driverClassName: com.mysql.jdbc.Driver
+      initialSize: 2
+      minIdle: 2
+      maxActive: 10
+      maxWait: 3000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 100
+      validationQuery: SELECT 1
+      validationQueryTimeout: 5
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      filters: stat,wall
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: zhouyong
+    password: 123456
+    virtual-host: order
+
+# 配置全局的超时时间
+ribbon:
+  ReadTimeout: 6000
+  ConnectTimeout: 6000
+
+# 配置对请求的内容的压缩,Apache的HTTP Client替换Feign原始的http client,启用Hystrix
+feign:
+  compression:
+    request:
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 1024
+
+eureka:
+  instance:
+    ip-address: 127.0.0.1
+    lease-expiration-duration-in-seconds: 90                        # 服务续约到期时间
+    lease-renewal-interval-in-seconds: 30                           # 服务续约间隔时间
+  client:
+    enabled: true                                                   # Eureka 启禁用
+    eureka-server-connect-timeout-seconds: 5                        # Eureka 连接超时时间
+    eureka-connection-idle-timeout-seconds: 30                      # Eureka 连接超时时间
+    eureka-server-read-timeout-seconds: 8                           # Eureka Server等待超时时间
+    heartbeat-executor-thread-pool-size: 2                          # 心跳执行器的线程池初始值
+    initial-instance-info-replication-interval-seconds: 40          # 最初复制实例信息到Eureka服务器所需的时间
+    instance-info-replication-interval-seconds: 30                  # 同步实例变更信息到Eureka服务到周期
+    registry-fetch-interval-seconds: 30                             # 从Eureka服务器拉取服务信息周期
+    serviceUrl:
+      defaultZone: http://127.0.0.1:7001/eureka/                    # Eureka Server地址
+
+# hystrix全局超时时间配置
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: "*"
+
+redisson:
+  single-is: true
+  single-address: 127.0.0.1:6379
+  single-password: 123456
+  sentinel-is: false
+  sentinel-master-name: business-master
+  sentinel-addresses: 127.0.0.1:26379,127.0.0.1:26380,127.0.0.1:26381
+  sentinel-password: 123456

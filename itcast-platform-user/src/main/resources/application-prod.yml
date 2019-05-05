@@ -1,0 +1,70 @@
+server:
+  port: 8198
+
+spring:
+  profiles: prod
+  datasource:
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf8&useSSL=false
+      username: root
+      password: root
+      driverClassName: com.mysql.jdbc.Driver
+      initialSize: 2
+      minIdle: 2
+      maxActive: 10
+      maxWait: 3000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 100
+      validationQuery: SELECT 1
+      validationQueryTimeout: 5
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      filters: stat,wall
+  rabbitmq:
+    addresses: 127.0.0.1
+    username: pbh
+    password: zKvrPDEik23jNBoG
+    virtual-host: pbh
+  cloud:
+    stream:
+      bindings:
+        tso_card_trade-consumer:
+          destination: tso_card_trade
+          group: sap_consumer
+          consumer:
+            concurrency: 3
+            maxAttempts: 1
+        tso_card_trade-sender:
+          destination: tso_card_trade
+        sco_card_trade-consumer:
+          destination: sco_card_trade
+          group: sco_consumer
+          consumer:
+           concurrency: 3
+           maxAttempts: 1
+         sco_card_trade-sender:
+            destination: sco_card_trade
+logging:
+  level:
+     com.sinochem.account.api.mapper : debug
+
+eureka:
+  instance:
+    ip-address: 127.0.0.1
+    registry.default-open-for-traffic-count: 1                             # 注册实例
+    registry.expected-number-of-renews-per-min: 1                          # 注册实例
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:7001/eureka/
+
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: "*"
+
+

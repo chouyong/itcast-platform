@@ -1,0 +1,10 @@
+eureka:
+  instance:
+    ip-address: 127.0.0.1
+
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: "*"

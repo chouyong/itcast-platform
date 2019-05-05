@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: platform-zuul
+
+---
+server:
+  port: 7000
+spring:
+  profiles: peer1
+
+eureka:
+  instance:
+    ip-address: 127.0.0.1
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:7001/eureka/
+
+---
+server:
+  port: 8000
+spring:
+  profiles: peer2
+
+eureka:
+  instance:
+    ip-address: 127.0.0.1
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:7002/eureka/
+

@@ -1,0 +1,67 @@
+server:
+  port: 7000
+
+spring:
+  application:
+    name: platform-zuul
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    database: 0
+  datasource:
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf8&useSSL=false
+      username: root
+      password: root
+      driverClassName: com.mysql.jdbc.Driver
+      initialSize: 2
+      minIdle: 2
+      maxActive: 10
+      maxWait: 3000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 100
+      validationQuery: SELECT 1
+      validationQueryTimeout: 5
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      filters: stat,wall
+
+zuul:
+  host:
+    connect-timeout-millis: 10000
+    socket-timeout-millis: 60000
+  routes:
+    platform-order:
+      path: /orderservice/**
+      serviceId: platform-order
+
+eureka:
+  instance:
+    ip-address: ${spring.cloud.client.ip-address}
+    hostname: ${eureka.instance.ip-address}
+    instanceId: ${eureka.instance.ip-address}:${server.port}
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: ${eureka.client.serviceUrl.defaultZone}
+
+logging:
+  level:
+    com.itcast: debug
+
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+
+# hystrix全局超时时间配置
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000

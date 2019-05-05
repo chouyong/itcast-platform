@@ -1,0 +1,29 @@
+server:
+  port: ${server.port}
+
+spring:
+  application:
+    name: platform-user
+
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.itcast.entity
+
+eureka:
+  instance:
+    ip-address: ${spring.cloud.client.ip-address}
+    hostname: ${eureka.instance.ip-address}
+    instanceId: ${eureka.instance.ip-address}:${server.port}
+    prefer-ip-address: true
+    registry.default-open-for-traffic-count: ${eureka.instance.registry.default-open-for-traffic-count}
+    registry.expected-number-of-renews-per-min: ${eureka.instance.registry.expected-number-of-renews-per-min}
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: ${eureka.client.serviceUrl.defaultZone}
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

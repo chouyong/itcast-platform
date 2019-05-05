@@ -1,0 +1,21 @@
+server:
+  port: 8098
+
+spring:
+  profiles: uat
+
+logging:
+  level:
+     com.itcast.mapper : debug
+
+eureka:
+  instance:
+    ip-address: 127.0.0.1
+    registry.default-open-for-traffic-count: 1                             # 注册实例
+    registry.expected-number-of-renews-per-min: 1                          # 注册实例
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:7001/eureka/
+
+
+
