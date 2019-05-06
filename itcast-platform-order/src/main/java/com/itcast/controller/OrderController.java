@@ -72,7 +72,7 @@ public class OrderController {
                     order.setId(uuid);
                     order.setUserid(user.getId());
                     //发送消息队列
-                    MqUtil.instance(host,port,username,password,virtualHost).sendMsg("orderQueue", JsonUtils.toText("123456789"));
+                    MqUtil.instance(host,port,username,password,virtualHost).sendMsg("orderQueue", JsonUtils.toText(order));
                     int payOrderResult = orderMapper.insert(order);
                     if(payOrderResult > 0){
                         strJson = JsonUtils.toText(ResponseUtils.success("下单成功",order));
