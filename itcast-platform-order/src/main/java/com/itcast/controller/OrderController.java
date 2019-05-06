@@ -82,8 +82,6 @@ public class OrderController {
                 }
                 //释放锁
                 rlock.unlock();
-            } else {
-                Thread.sleep(300);
             }
         } catch (InterruptedException e) {
             //e.printStackTrace();
