@@ -12,12 +12,12 @@
 4.系统服务配置：
   操作系统hosts文件配置内容：127.0.0.1    www.buba.com
   Nginx路径下conf目录下nginx.conf文件配置内容：
+    
     http {
          upstream  backServer {
         	server 127.0.0.1:7000 weight=1;
         	server 127.0.0.1:8000 weight=1;
-         }
-         
+         }         
          server {
             server_name  www.buba.com;
             location / {
