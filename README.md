@@ -37,7 +37,9 @@
 
 8.itcast-platform-eureka和itcast-platform-zuul模块中application-prod.yml有两个profiles: peer1和peer2，双实例部署测试高并发高可用。两个后端业务服务根据测试和生产需求，进行多实例部署测试。
 
-9.数据库表初始化脚本：
+9.启动多实例多profiles指令：java -jar itcast-platform-zuul-1.0.0.jar --spring.profiles.active=prod,peer1 或 java -jar itcast-platform-zuul-1.0.0.jar --spring.profiles.active=prod,peer2
+
+10.数据库表初始化脚本：
     
     CREATE TABLE
         USER
