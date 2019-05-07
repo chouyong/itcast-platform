@@ -35,7 +35,7 @@ zuul:
     connect-timeout-millis: 10000
     socket-timeout-millis: 60000
   routes:
-    platform-order:
+    platform-order:               #自定义名称和policies名称对应即可
       path: /orderservice/**
       serviceId: platform-order
 #服务限流
@@ -45,8 +45,8 @@ zuul:
     policies:
       platform-order:         #针对platform-order服务限流
        limit: 10              #每秒多少个请求（次数）
-       quota: 1               #每个请求的时间限制（秒）
-       refreshInterval: 3     #测试客户端如果3秒内请求超过10次，服务端就抛出429异常（秒）
+        #quota: 1               #每个请求的时间限制（秒）
+       refreshInterval: 60     #测试客户端如果60秒内请求超过10次，服务端就抛出429异常（秒）
        type:
          - ORIGIN             #可选 限流方式: url通过请求路径区分  origin通过客户端IP地址区分  user是通过登录用户名进行区分，也包括匿名用户
 
