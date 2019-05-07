@@ -33,12 +33,13 @@
         <pagehelper.version>1.2.5</pagehelper.version>
         <logstash-logback.version>5.2</logstash-logback.version>
         <alibaba-druid.version>1.1.10</alibaba-druid.version>
-        <redis-jedis.version>2.9.0</redis-jedis.version>
+        <redis-jedis.spring-boot-devtoolsversion>2.9.0</redis-jedis.spring-boot-devtoolsversion>
         <httpclient.version>4.5.1</httpclient.version>
         <httpcore.version>4.4.3</httpcore.version>
         <codec.version>1.11</codec.version>
         <fastjson.version>1.2.57</fastjson.version>
         <assertj-core.version>3.9.1</assertj-core.version>
+        <redisson.version>3.5.7</redisson.version>
         <itcast-common>1.0.0</itcast-common>
     </properties>
 
@@ -120,6 +121,11 @@
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>${assertj-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.itcast.common</groupId>

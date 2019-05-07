@@ -8,6 +8,7 @@ import com.itcast.dto.User;
 import com.itcast.entity.Order;
 import com.itcast.mapper.OrderMapper;
 import com.itcast.service.UserService;
+import com.itcast.utils.IDUtil;
 import com.itcast.utils.MqUtil;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -67,9 +68,10 @@ public class OrderController {
                 if ("0".equals(result.getString("code"))) {
                     String data = result.getString("data");
                     User user = JSONObject.parseObject(data, User.class);
-                    String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+                    //订单号
+                    String orderId = IDUtil.getInstance().createID();
                     Order order = new Order();
-                    order.setId(uuid);
+                    order.setId(orderId);
                     order.setUserid(user.getId());
                     //发送消息队列
                     MqUtil.instance(host,port,username,password,virtualHost).sendMsg("orderQueue", JsonUtils.toText(order));
