@@ -40,6 +40,7 @@
         <fastjson.version>1.2.57</fastjson.version>
         <assertj-core.version>3.9.1</assertj-core.version>
         <redisson.version>3.5.7</redisson.version>
+        <spring-cloud-zuul-ratelimit.version>2.0.6.RELEASE</spring-cloud-zuul-ratelimit.version>
         <itcast-common>1.0.0</itcast-common>
     </properties>
 
@@ -126,6 +127,11 @@
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson</artifactId>
                 <version>${redisson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.marcosbarbero.cloud</groupId>
+                <artifactId>spring-cloud-zuul-ratelimit</artifactId>
+                <version>${spring-cloud-zuul-ratelimit.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.itcast.common</groupId>
