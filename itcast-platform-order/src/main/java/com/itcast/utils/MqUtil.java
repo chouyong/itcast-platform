@@ -60,6 +60,7 @@ public class MqUtil {
             Map map=new HashMap();
             map.put("x-dead-letter-exchange","e-"+queueName);
             map.put("x-dead-letter-routing-key", "key");
+            //消息过期时间 单位毫秒 15*60*1000 15分钟
             map.put("x-message-ttl", 15*60*1000);
             channel.queueDeclare(queueName+"Dead",true,false,false,map);
             channel.queueBind(queueName+"Dead","e-"+queueName+"Dead","key");

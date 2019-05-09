@@ -10,11 +10,11 @@ eureka:
     ip-address: ${spring.cloud.client.ip-address}
     hostname: ${eureka.instance.ip-address}
     instanceId: ${eureka.instance.ip-address}:${server.port}
-    prefer-ip-address: true
+    preferIpAddress: true                                                             # 将IP注册到Eureka Server上
   client:
-    registerWithEureka: false
-    fetchRegistry: false
+    registerWithEureka: false                                                         # 表示是否注册自身到eureka服务器，因为当前这个应用就是eureka服务器，没必要注册自身，所以这里是false
+    fetchRegistry: false                                                              #  表示是否从eureka服务器获取注册信息
     serviceUrl:
-      defaultZone: http://${eureka.instance.ip-address}:${server.port}/eureka/
+      defaultZone: http://${eureka.instance.ip-address}:${server.port}/eureka/        # 是设置eureka服务器所在的地址，查询服务和注册服务都需要依赖这个地址
   server:
-    enable-self-preservation: false
+    enableSelfPreservation: false                                                     # 设为false，关闭自我保护，开发测试环境需要频繁启动注册实例，需要关闭自我保护功能，以免请求跑到旧实例中，生成环境需要开启自我保护功能

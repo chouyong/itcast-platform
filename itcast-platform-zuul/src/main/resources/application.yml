@@ -30,6 +30,7 @@ spring:
       testOnReturn: false
       filters: stat,wall
 
+#zuul超时设置和路由规则设置
 zuul:
   host:
     connect-timeout-millis: 10000
@@ -64,6 +65,7 @@ logging:
   level:
     com.itcast: debug
 
+# 配置全局的超时时间
 ribbon:
   ReadTimeout: 60000
   ConnectTimeout: 60000
