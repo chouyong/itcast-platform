@@ -38,7 +38,7 @@ ribbon:
   ConnectTimeout: ${ribbon.ConnectTimeout}
 
 # feign接口调用日志输出
-logging.level.com.sinochem.ecard.api.service.AccountService: DEBUG
+logging.level.com.itcast.service.UserService: DEBUG
 
 # 配置对请求的内容的压缩,Apache的HTTP Client替换Feign原始的http client,启用Hystrix
 feign:
