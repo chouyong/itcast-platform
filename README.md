@@ -7,7 +7,7 @@
   此时网关Gateway接收到请求后，根据请求路径进行动态路由，通过注册中心eureka服务发现是订单中的服务，则从ribbon中选择一台订单的实例进行调用，订单实例中如需要其他服务信息(例如用户服务信息)，
   再通过声明式服务调用feign调用其他服务接口信息，将数据业务处理后，反馈给前端，流程结束。
 
-3.用到相关服务和技术：redis缓存，mysql数据库，rabbitMQ队列，Nginx，redisson分布式锁，Mybatis持久层框架，Mybatis的分页插件pagehelper，mybatis-generator代码自动生成工具，spring cloud微服务组件。
+3.用到相关服务和技术：redis缓存，mysql数据库，rabbitMQ队列，Nginx，redisson分布式锁，Mybatis持久层框架，Mybatis的分页插件pagehelper，mybatis-generator代码自动生成工具，spring cloud微服务组件。JDK1.8,maven-3.3.9。
 
 4.系统服务配置：
   操作系统hosts文件配置内容：127.0.0.1    www.buba.com
