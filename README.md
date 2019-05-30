@@ -56,6 +56,8 @@
         (
             ID VARCHAR(128) COLLATE utf8_general_ci NOT NULL,
             userid VARCHAR(128) COLLATE utf8_general_ci,
+            goodsid VARCHAR(128) COLLATE utf8_general_ci,
+            campaignid VARCHAR(128) COLLATE utf8_general_ci,
             PRIMARY KEY (ID)
         )
         ENGINE=InnoDB DEFAULT CHARSET=utf8mb4; 
