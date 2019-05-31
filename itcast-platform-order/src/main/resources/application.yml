@@ -9,6 +9,36 @@ mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.itcast.entity
 
+########################### rabbitmq 配置 ##########################
+rabbitmq:
+  host: ${rabbitmq.host}
+  port: ${rabbitmq.port}
+  username: ${rabbitmq.username}
+  password: ${rabbitmq.password}
+  virtual-host: ${rabbitmq.virtual-host}
+
+########################### queue 配置 ##########################
+mq:
+  env: order
+
+register:
+  queue:
+    name: ${mq.env}.receive.queue
+  exchange:
+    name: ${mq.env}.receive.exchange
+  delay:
+    queue:
+      name: ${mq.env}.delay.queue
+    exchange:
+      name: ${mq.env}.delay.exchange
+
+#交易记录失效时间：10s
+trade:
+  record:
+    ttl: 10000
+
+########################### eureka 配置 ##########################
+
 eureka:
   instance:
     ip-address: ${spring.cloud.client.ip-address}
@@ -65,11 +95,17 @@ hystrix:
           thread:
             timeoutInMilliseconds: ${hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds}
 
+
+########################### pagehelper 配置 ##########################
+
 pagehelper:
   helperDialect: mysql
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+
+
+########################### redisson 配置 ##########################
 
 redisson:
   single-is: ${redisson.single-is}                               #单Redis节点模式

@@ -1,25 +1,23 @@
 package com.itcast.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itcast.common.utils.JsonUtils;
 import com.itcast.common.utils.ResponseUtils;
 import com.itcast.dto.OrderInfo;
-import com.itcast.dto.User;
+import com.itcast.dto.ResultMsg;
 import com.itcast.entity.Order;
-import com.itcast.mapper.OrderMapper;
-import com.itcast.service.UserService;
-import com.itcast.utils.IDUtil;
-import com.itcast.utils.MqUtil;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.support.converter.AbstractJavaTypeMapper;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 
 @RestController
 @RequestMapping("/order")
@@ -42,55 +40,40 @@ public class OrderController {
     private String virtualHost;
 
     @Autowired
-    private UserService userService;
+    private Environment env;
 
     @Autowired
-    private OrderMapper orderMapper;
-
-    @Autowired
-    private RedissonClient redissonClient;
+    private RabbitTemplate rabbitTemplate;
 
     @PostMapping(value = "/pay")
     public String pay(@RequestBody OrderInfo orderInfo) {
         String strJson = null;
         logger.info("订单入参参数：" + JsonUtils.toText(orderInfo));
-        //获取锁
-        RLock rlock = redissonClient.getLock(orderInfo.getUserName());
-        try {
-            //等待5秒，锁过期时间6秒，单位：秒
-            boolean isLock = rlock.tryLock(5, 6, TimeUnit.SECONDS);
-            if (isLock) {
-                // 业务代码
-                strJson = userService.searchUser(orderInfo.getUserName());
-                //解析返回json
-                JSONObject result = JSONObject.parseObject(strJson);
-                //调用用户系统接口成功，进行下单逻辑处理
-                if ("0".equals(result.getString("code"))) {
-                    String data = result.getString("data");
-                    User user = JSONObject.parseObject(data, User.class);
-                    //订单号
-                    String orderId = IDUtil.getInstance().createID();
-                    Order order = new Order();
-                    order.setId(orderId);
-                    order.setUserid(user.getId());
-                    //发送消息队列
-                    MqUtil.instance(host,port,username,password,virtualHost).sendMsg("orderQueue", JsonUtils.toText(order));
-                    int payOrderResult = orderMapper.insert(order);
-                    if(payOrderResult > 0){
-                        strJson = JsonUtils.toText(ResponseUtils.success("下单成功",order));
-                    }else{
-                        strJson = JsonUtils.toText(ResponseUtils.failure("下单失败"));
-                    }
-                }
-                //释放锁
-                rlock.unlock();
+        Order order = new Order();
+        order.setUserId(orderInfo.getUserId());
+        order.setGoodsId(orderInfo.getGoodsId());
+        order.setCampaignId(orderInfo.getCampaignId());
+        //发送消息队列
+        //TODO：设置超时，用mq处理已超时的下单记录（一旦记录超时，则处理为无效）
+        final Long ttl=env.getProperty("trade.record.ttl",Long.class);
+        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+        rabbitTemplate.setExchange(env.getProperty("register.delay.exchange.name"));
+        rabbitTemplate.setRoutingKey("");
+        rabbitTemplate.convertAndSend(order, new MessagePostProcessor() {
+            @Override
+            public Message postProcessMessage(Message message) throws AmqpException {
+                message.getMessageProperties().setHeader(AbstractJavaTypeMapper.DEFAULT_CONTENT_CLASSID_FIELD_NAME,"testUser");
+                message.getMessageProperties().setExpiration(ttl+"");
+                return message;
             }
-        } catch (InterruptedException e) {
-            //e.printStackTrace();
-            logger.error("获取锁异常：" + e);
-            //释放锁
-            rlock.unlock();
-            strJson = JsonUtils.toText(ResponseUtils.failure("获取锁异常！"));
+        });
+
+        //ResultMsg resultMsg = MqUtil.instance(host,port,username,password,virtualHost).sendMsg("orderQueue", JsonUtils.toText(order));
+        ResultMsg resultMsg = new ResultMsg(true);
+        if(resultMsg.getResult()){
+            strJson = JsonUtils.toText(ResponseUtils.success("抢购信息发送成功",order));
+        }else{
+            strJson = JsonUtils.toText(ResponseUtils.success("抢购信息发送失败",order));
         }
         return strJson;
     }

@@ -3,9 +3,13 @@ package com.itcast.dto;
 public class OrderInfo {
     private String id;
 
-    private String userid;
+    private String userId;
 
     private String userName;
+
+    private String goodsId;
+
+    private String campaignId;
 
     public String getId() {
         return id;
@@ -15,12 +19,12 @@ public class OrderInfo {
         this.id = id;
     }
 
-    public String getUserid() {
-        return userid;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {
@@ -29,5 +33,21 @@ public class OrderInfo {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
+    }
+
+    public String getCampaignId() {
+        return campaignId;
+    }
+
+    public void setCampaignId(String campaignId) {
+        this.campaignId = campaignId;
     }
 }
