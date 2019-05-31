@@ -1,0 +1,114 @@
+server:
+  port: ${server.port}
+
+spring:
+  application:
+    name: platform-orderReceive
+
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.itcast.entity
+
+########################### rabbitmq 配置 ##########################
+rabbitmq:
+  host: ${rabbitmq.host}
+  port: ${rabbitmq.port}
+  username: ${rabbitmq.username}
+  password: ${rabbitmq.password}
+  virtual-host: ${rabbitmq.virtual-host}
+
+########################### queue 配置 ##########################
+mq:
+  env: order
+
+register:
+  queue:
+    name: ${mq.env}.receive.queue
+  exchange:
+    name: ${mq.env}.receive.exchange
+  delay:
+    queue:
+      name: ${mq.env}.delay.queue
+    exchange:
+      name: ${mq.env}.delay.exchange
+
+#交易记录失效时间：10s
+trade:
+  record:
+    ttl: 10000
+
+########################### eureka 配置 ##########################
+
+eureka:
+  instance:
+    ip-address: ${spring.cloud.client.ip-address}
+    hostname: ${eureka.instance.ip-address}
+    instanceId: ${eureka.instance.ip-address}:${server.port}
+    prefer-ip-address: true
+    lease-expiration-duration-in-seconds: ${eureka.instance.lease-expiration-duration-in-seconds}
+    lease-renewal-interval-in-seconds: ${eureka.instance.lease-renewal-interval-in-seconds}
+  client:
+    enabled: true
+    eureka-server-connect-timeout-seconds: ${eureka.client.eureka-server-connect-timeout-seconds}
+    eureka-connection-idle-timeout-seconds: ${eureka.client.eureka-connection-idle-timeout-seconds}
+    eureka-server-read-timeout-seconds: ${eureka.client.eureka-server-read-timeout-seconds}
+    fetch-registry: true
+    register-with-eureka: true
+    g-zip-content: true
+    heartbeat-executor-thread-pool-size: ${eureka.client.heartbeat-executor-thread-pool-size}
+    initial-instance-info-replication-interval-seconds: ${eureka.client.initial-instance-info-replication-interval-seconds}
+    instance-info-replication-interval-seconds: ${eureka.client.instance-info-replication-interval-seconds}
+    registry-fetch-interval-seconds: ${eureka.client.registry-fetch-interval-seconds}
+    serviceUrl:
+      defaultZone: ${eureka.client.serviceUrl.defaultZone}
+
+# 配置全局的超时时间
+ribbon:
+  ReadTimeout: ${ribbon.ReadTimeout}
+  ConnectTimeout: ${ribbon.ConnectTimeout}
+
+# feign接口调用日志输出
+logging.level.com.itcast.service.UserService: DEBUG
+
+# 配置对请求的内容的压缩,Apache的HTTP Client替换Feign原始的http client,启用Hystrix
+feign:
+  hystrix:
+    enabled: true
+  httpclient:
+    enabled: true
+  compression:
+    request:
+      enabled: true
+      mime-types: ${feign.compression.request.mime-types}
+      min-request-size: ${feign.compression.request.min-request-size}
+    response:
+      enabled: true
+
+# hystrix全局超时时间配置
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: ${hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds}
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+redisson:
+  single-is: ${redisson.single-is}                               #单Redis节点模式
+  single-address: ${redisson.single-address}
+  single-password: ${redisson.single-password}
+  sentinel-is: ${redisson.sentinel-is}
+  sentinel-master-name: ${redisson.sentinel-master-name}              #哨兵模式
+  sentinel-addresses: ${redisson.sentinel-addresses}
+  sentinel-password: ${redisson.sentinel-password}
+
+
+
