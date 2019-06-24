@@ -1,3 +1,13 @@
 eureka:
   instance:
     ip-address: 127.0.0.1
+  client:
+    registerWithEureka: false                                                         # 表示是否注册自身到eureka服务器，因为当前这个应用就是eureka服务器，没必要注册自身，所以这里是false
+    fetchRegistry: false                                                              #  表示是否从eureka服务器获取注册信息
+
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: "*"

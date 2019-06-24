@@ -24,21 +24,6 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 public class OrderController {
     private Logger logger = LoggerFactory.getLogger(OrderController.class);
 
-    @Value("${spring.rabbitmq.host}")
-    private String host;
-
-    @Value("${spring.rabbitmq.port}")
-    private int port;
-
-    @Value("${spring.rabbitmq.username}")
-    private String username;
-
-    @Value("${spring.rabbitmq.password}")
-    private String password;
-
-    @Value("${spring.rabbitmq.virtual-host}")
-    private String virtualHost;
-
     @Autowired
     private Environment env;
 
@@ -68,13 +53,7 @@ public class OrderController {
             }
         });
 
-        //ResultMsg resultMsg = MqUtil.instance(host,port,username,password,virtualHost).sendMsg("orderQueue", JsonUtils.toText(order));
-        ResultMsg resultMsg = new ResultMsg(true);
-        if(resultMsg.getResult()){
-            strJson = JsonUtils.toText(ResponseUtils.success("抢购信息发送成功",order));
-        }else{
-            strJson = JsonUtils.toText(ResponseUtils.success("抢购信息发送失败",order));
-        }
+        strJson = JsonUtils.toText(ResponseUtils.success("抢购信息发送成功",order));
         return strJson;
     }
 }

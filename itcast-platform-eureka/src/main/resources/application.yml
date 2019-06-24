@@ -12,8 +12,8 @@ eureka:
     instanceId: ${eureka.instance.ip-address}:${server.port}
     preferIpAddress: true                                                             # 将IP注册到Eureka Server上
   client:
-    registerWithEureka: false                                                         # 表示是否注册自身到eureka服务器，因为当前这个应用就是eureka服务器，没必要注册自身，所以这里是false
-    fetchRegistry: false                                                              #  表示是否从eureka服务器获取注册信息
+    registerWithEureka: ${eureka.client.registerWithEureka}                                                         # 表示是否注册自身到eureka服务器，因为当前这个应用就是eureka服务器，没必要注册自身，所以这里是false
+    fetchRegistry: ${eureka.client.fetchRegistry}                                                              #  表示是否从eureka服务器获取注册信息
     serviceUrl:
       defaultZone: http://${eureka.instance.ip-address}:${server.port}/eureka/        # 是设置eureka服务器所在的地址，查询服务和注册服务都需要依赖这个地址
   server:
