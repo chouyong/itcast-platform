@@ -34,7 +34,7 @@
         <logstash-logback.version>5.2</logstash-logback.version>
         <alibaba-druid.version>1.1.10</alibaba-druid.version>
         <redis-jedis.spring-boot-devtoolsversion>2.9.0</redis-jedis.spring-boot-devtoolsversion>
-        <httpclient.version>4.5.1</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
         <httpcore.version>4.4.3</httpcore.version>
         <codec.version>1.11</codec.version>
         <fastjson.version>1.2.57</fastjson.version>
